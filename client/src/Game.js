@@ -10,7 +10,7 @@ export const Game = () => {
     const [coins, setCoins] = useState({});
 
     useEffect(() => {
-        const socket = io('ec2-13-41-158-103.eu-west-2.compute.amazonaws.com:3008');
+        const socket = io('ws://ec2-13-41-158-103.eu-west-2.compute.amazonaws.com:8080');
         socket.on("connect", () => {
             setPlayerId(socket.id);
         });

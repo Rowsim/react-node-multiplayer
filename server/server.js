@@ -47,5 +47,7 @@ const startGameInterval = (socket, state) => {
     }, 1000 / FRAME_RATE);
 }
 
-// io.listen(3008);
-httpServer.listen(3000);
+const PORT = 8080;
+httpServer.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
