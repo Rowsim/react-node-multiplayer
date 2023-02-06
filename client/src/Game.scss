@@ -209,8 +209,39 @@ button:active {
 
 /* Coins */
 .Coin_sprite {
-  background: url(/images/coin-nep.png) no-repeat no-repeat;
-  animation: coinFloat 0.8s linear infinite alternate-reverse;
+  background: url(/images/coin.png) no-repeat no-repeat;
+  animation: coinFloat 0.8s linear infinite alternate-reverse, coinRotate 0.8s infinite;
+  top: -5px;
+}
+
+@keyframes coinRotate {
+  0% {
+    background: url(/images/coin.png) no-repeat no-repeat;
+  }
+
+  16.6% {
+    background: url(/images/coin-1.png) no-repeat no-repeat;
+  }
+
+  33.3% {
+    background: url(/images/coin-2.png) no-repeat no-repeat;
+  }
+
+  49.9% {
+    background: url(/images/coin-3.png) no-repeat no-repeat;
+  }
+
+  66.6% {
+    background: url(/images/coin-4.png) no-repeat no-repeat;
+  }
+
+  83.3% {
+    background: url(/images/coin-5.png) no-repeat no-repeat;
+  }
+
+  100% {
+    background: url(/images/coin.png) no-repeat no-repeat;
+  }
 }
 
 @keyframes coinFloat {
