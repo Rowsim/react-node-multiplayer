@@ -7,7 +7,7 @@ const httpServer = createServer();
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "http://mp-demo-client-dev.s3.eu-west-2.amazonaws.com",
         methods: ["GET", "POST"]
     }
 });
