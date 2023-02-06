@@ -1,0 +1,86 @@
+service: ${file(package.json):name}
+plugins:
+    - serverless-s3-sync
+    - serverless-cloudfront-invalidate
+
+provider:
+    name: aws
+    runtime: nodejs16.x
+    profile: ${env:PROFILE, 'personal'}
+    region: ${env:REGION, 'eu-west-2'}
+    stage: ${env:STAGE, 'dev'}
+
+custom:
+    siteName: ${file(package.json):name}
+    bucketName: ${self:custom.siteName}-${self:provider.stage}
+    s3Sync:
+        - bucketName: ${self:custom.bucketName}
+          localDir: build
+    cloudfrontInvalidate:
+        - distributionIdKey: 'CDNDistributionId'
+          items:
+              - '/*'
+resources:
+    Resources:
+        AppS3Bucket:
+            Type: AWS::S3::Bucket
+            Properties:
+                AccessControl: PublicRead
+                BucketName: ${self:custom.bucketName}
+                WebsiteConfiguration:
+                    IndexDocument: index.html
+        AppS3BucketPolicy:
+            Type: AWS::S3::BucketPolicy
+            Properties:
+                Bucket:
+                    Ref: AppS3Bucket
+                PolicyDocument:
+                    Statement:
+                        - Sid: PublicReadGetObject
+                          Effect: Allow
+                          Principal: '*'
+                          Action:
+                              - s3:GetObject
+                          Resource:
+                              Fn::Join: ['', ['arn:aws:s3:::', { 'Ref': 'AppS3Bucket' }, '/*']]
+
+        CloudFrontDistribution:
+            Type: AWS::CloudFront::Distribution
+            Properties:
+                DistributionConfig:
+                    Origins:
+                        - DomainName: ${self:custom.bucketName}.s3.amazonaws.com
+                          Id: S3-${self:custom.siteName}
+                          CustomOriginConfig:
+                              HTTPPort: 80
+                              HTTPSPort: 443
+                              OriginProtocolPolicy: https-only
+                    Enabled: 'true'
+                    DefaultRootObject: index.html
+                    CustomErrorResponses:
+                        - ErrorCode: 404
+                          ResponseCode: 200
+                          ResponsePagePath: /index.html
+                    DefaultCacheBehavior:
+                        AllowedMethods:
+                            - DELETE
+                            - GET
+                            - HEAD
+                            - OPTIONS
+                            - PATCH
+                            - POST
+                            - PUT
+                        TargetOriginId: S3-${self:custom.siteName}
+                        ForwardedValues:
+                            QueryString: 'false'
+                            Cookies:
+                                Forward: none
+                        ViewerProtocolPolicy: allow-all
+                    ## The certificate to use when viewers use HTTPS to request objects.
+                    ViewerCertificate:
+                        CloudFrontDefaultCertificate: true
+    Outputs:
+        CDNDistributionId:
+            Description: CDN distribution id.
+            Value:
+                Ref: CloudFrontDistribution
