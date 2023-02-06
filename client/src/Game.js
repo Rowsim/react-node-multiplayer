@@ -8,9 +8,12 @@ export const Game = () => {
     const [playerId, setPlayerId] = useState('');
     const [players, setPlayers] = useState({});
     const [coins, setCoins] = useState({});
+    const [chatInput, setChatInput] = useState('');
+    const [socket, setSocket] = useState();
 
     useEffect(() => {
         const socket = io('ws://ec2-18-130-212-104.eu-west-2.compute.amazonaws.com:8080');
+        setSocket(socket);
         socket.on("connect", () => {
             setPlayerId(socket.id);
         });
@@ -36,15 +39,27 @@ export const Game = () => {
         };
     }, []);
 
+    const handleSendChat = () => {
+        if (!chatInput.trim()) return;
+        socket.emit('chatMessage', chatInput);
+        setChatInput('');
+    };
+
+    const handleSendChatInputKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSendChat();
+        }
+    };
+
     return (
         <Fragment>
             <div className="player-info">
                 <div>
                     <label htmlFor="player-name">Your Name</label>
-                    <input id="player-name" maxLength="10" type="text" />
+                    <input id="player-name" maxLength="15" type="text" />
                 </div>
                 <div>
-                    <button id="player-color">Change Skin</button>
+                    <button id="player-color">Change Name</button>
                 </div>
             </div>
             <div className='game-container'>
@@ -68,6 +83,13 @@ export const Game = () => {
                                 <span className="Character_coins">{coins}</span>
                             </div>
                             <div className="Character_you-arrow grid-cell" />
+                            {true ?
+                                <div className={classNames('Character_chat', {
+                                    'visible': player.messages.length > 0,
+                                    'hidden': player.messages.length < 1
+                                })}>{player.messages[player.messages.length - 1]}</div>
+                                : null
+                            }
                         </div>)
                 })}
                 {Object.keys(coins).map((coinKey) => {
@@ -81,6 +103,10 @@ export const Game = () => {
                         </div>
                     )
                 })}
+            </div>
+            <div className="player-send-chat">
+                <input maxLength="60" type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={handleSendChatInputKeyDown} />
+                <button onClick={handleSendChat}>Send</button>
             </div>
         </Fragment>
     )

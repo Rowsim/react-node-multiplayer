@@ -31,6 +31,7 @@ export const createNewPlayer = (id) => {
         x,
         y,
         coins: 0,
+        messages: []
     }
 }
 

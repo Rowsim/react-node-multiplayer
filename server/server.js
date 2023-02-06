@@ -7,7 +7,8 @@ const httpServer = createServer();
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://mp-demo-client-dev.s3.eu-west-2.amazonaws.com",
+        // origin: "http://mp-demo-client-dev.s3.eu-west-2.amazonaws.com",
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
@@ -37,6 +38,16 @@ io.on('connection', socket => {
         gameState.players[id] = updatedPlayer;
     }
     socket.on('keydown', handleKeydown);
+
+    const handleChatMessage = (message) => {
+        if (!message) return;
+        const player = gameState.players[id];
+        player.messages.push(message);
+        setTimeout(() => {
+            player.messages.shift();
+        }, 5000);
+    };
+    socket.on('chatMessage', handleChatMessage);
 
     startGameInterval(socket, gameState);
 });
