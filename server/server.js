@@ -49,6 +49,13 @@ io.on('connection', socket => {
     };
     socket.on('chatMessage', handleChatMessage);
 
+    const handleChangeName = (name) => {
+        if (!name) return;
+        const player = gameState.players[id];
+        player.name = name;
+    }
+    socket.on('changeName', handleChangeName);
+
     startGameInterval(socket, gameState);
 });
 

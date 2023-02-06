@@ -9,6 +9,7 @@ export const Game = () => {
     const [players, setPlayers] = useState({});
     const [coins, setCoins] = useState({});
     const [chatInput, setChatInput] = useState('');
+    const [nameInput, setNameInput] = useState('');
     const [socket, setSocket] = useState();
 
     useEffect(() => {
@@ -51,15 +52,23 @@ export const Game = () => {
         }
     };
 
+    const handleChangeName = () => {
+        if (!nameInput.trim()) return;
+        socket.emit('changeName', nameInput);
+        setNameInput('');
+    }
+
     return (
         <Fragment>
             <div className="player-info">
                 <div>
                     <label htmlFor="player-name">Your Name</label>
-                    <input id="player-name" maxLength="15" type="text" />
+                    <input id="player-name" maxLength="15" type="text" 
+                    value={nameInput} 
+                    onChange={(e) => setNameInput(e.currentTarget.value)} />
                 </div>
                 <div>
-                    <button id="player-color">Change Name</button>
+                    <button id="player-color" onClick={() => handleChangeName()}>Change Name</button>
                 </div>
             </div>
             <div className='game-container'>
