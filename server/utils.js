@@ -1,5 +1,4 @@
-export const FRAME_RATE = 10;
-
+export const FRAME_RATE = 60;
 
 export function randomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
