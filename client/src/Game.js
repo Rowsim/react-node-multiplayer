@@ -79,31 +79,41 @@ export const Game = () => {
                     const left = 16 * x + "px";
                     const top = 16 * y - 4 + "px";
                     return (
-                        <div
-                            key={id}
-                            data-color={color}
-                            data-direction={direction}
-                            style={{ transform: `translate3d(${left}, ${top}, 0)` }}
-                            className={classNames('Character grid-cell', {
-                                'you': id === playerId
-                            })}>
-                            <div className="Character_shadow grid-cell" />
-                            <div className="Character_sprite grid-cell" />
-                            <div className="Character_name-container">
-                                <span className={classNames("Character_name", {
-                                    'Character_name--mostCoins': generalGameState?.playerIdWithMostCoins === id
-                                })}>{name}</span>
-                                <span className="Character_coins">{coins}</span>
-                            </div>
-                            <div className="Character_you-arrow grid-cell" />
-                            {true ?
-                                <div className={classNames('Character_chat', {
-                                    'visible': player.messages.length > 0,
-                                    'hidden': player.messages.length < 1
-                                })}>{player.messages[player.messages.length - 1]}</div>
-                                : null
-                            }
-                        </div>)
+                      <div
+                        key={id}
+                        data-color={color}
+                        data-direction={direction}
+                        style={{ transform: `translate3d(${left}, ${top}, 0)` }}
+                        className={classNames("Character grid-cell", {
+                          you: id === playerId,
+                        })}
+                      >
+                        <div className="Character_shadow grid-cell" />
+                        <div className="Character_sprite grid-cell" />
+                        <div className="Character_name-container">
+                          <span
+                            className={classNames("Character_name", {
+                              "Character_name--mostCoins":
+                                generalGameState?.playerIdWithMostCoins === id,
+                            })}
+                          >
+                            {name}
+                          </span>
+                          <span className="Character_coins">{coins}</span>
+                        </div>
+                        <div className="Character_you-arrow grid-cell" />
+                        {true ? (
+                          <div
+                            className={classNames("Character_chat", {
+                              visible: player.messages.length > 0,
+                              hidden: player.messages.length < 1,
+                            })}
+                          >
+                            {player.messages[player.messages.length - 1]}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
                 })}
                 {Object.keys(coins).map((coinKey) => {
                     const [x, y] = coinKey.split('x');

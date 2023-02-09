@@ -3,12 +3,12 @@ import bandname from 'bandname';
 
 export const initGameState = () => {
     return {
-        players: {},
-        coins: generateCoins(undefined, 3),
-        general: {
-            playerIdWithMostCoins: null
-        }
-    }
+      players: {},
+      coins: generateCoins(undefined, 3),
+      general: {
+        playerIdWithMostCoins: null,
+      },
+    };
 }
 
 export const generateCoins = (coins, numberOfCoins = 1) => {
