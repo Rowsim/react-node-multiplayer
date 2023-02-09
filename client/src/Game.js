@@ -8,6 +8,7 @@ export const Game = () => {
     const [playerId, setPlayerId] = useState('');
     const [players, setPlayers] = useState({});
     const [coins, setCoins] = useState({});
+    const [generalGameState, setGeneralGameState] = useState({});
     const [chatInput, setChatInput] = useState('');
     const [nameInput, setNameInput] = useState('');
     const [socket, setSocket] = useState();
@@ -22,6 +23,7 @@ export const Game = () => {
             const gameState = JSON.parse(state);
             setPlayers(gameState.players);
             setCoins(gameState.coins);
+            setGeneralGameState(gameState.general);
         });
 
         const handleKeydown = (keyCode) => {
@@ -88,7 +90,9 @@ export const Game = () => {
                             <div className="Character_shadow grid-cell" />
                             <div className="Character_sprite grid-cell" />
                             <div className="Character_name-container">
-                                <span className="Character_name">{name}</span>
+                                <span className={classNames("Character_name", {
+                                    'Character_name--mostCoins': generalGameState?.playerIdWithMostCoins === id
+                                })}>{name}</span>
                                 <span className="Character_coins">{coins}</span>
                             </div>
                             <div className="Character_you-arrow grid-cell" />

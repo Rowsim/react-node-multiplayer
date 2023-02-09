@@ -1,6 +1,14 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { checkIfPlayerIsOnCoin, createNewPlayer, generateCoins, initGameState, removeCoin, updatedPlayerFromMovement } from './game.js';
+import {
+  checkIfPlayerIsOnCoin,
+  createNewPlayer,
+  generateCoins,
+  initGameState,
+  removeCoin,
+  updatedPlayerFromMovement,
+  doesPlayerHaveMostCoins,
+} from "./game.js";
 import { FRAME_RATE } from "./utils.js";
 
 const httpServer = createServer();
@@ -32,8 +40,18 @@ io.on('connection', socket => {
         if (!updatedPlayer) return;
         if (checkIfPlayerIsOnCoin(gameState.coins, updatedPlayer.x, updatedPlayer.y)) {
             updatedPlayer.coins += 1;
-            const coins = removeCoin(gameState.coins, updatedPlayer.x, updatedPlayer.y);
-            gameState.coins = generateCoins(coins);
+            const updatedCoins = removeCoin(gameState.coins, updatedPlayer.x, updatedPlayer.y);
+            gameState.coins = generateCoins(updatedCoins);
+
+            if (
+              !gameState.general.playerIdWithMostCoins ||
+              doesPlayerHaveMostCoins(
+                updatedPlayer.coins,
+                gameState.players[gameState.general.playerIdWithMostCoins].coins
+              )
+            ) {
+              gameState.general.playerIdWithMostCoins = id;
+            }
         }
         gameState.players[id] = updatedPlayer;
     }

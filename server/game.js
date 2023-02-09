@@ -4,7 +4,10 @@ import bandname from 'bandname';
 export const initGameState = () => {
     return {
         players: {},
-        coins: generateCoins(undefined, 3)
+        coins: generateCoins(undefined, 3),
+        general: {
+            playerIdWithMostCoins: null
+        }
     }
 }
 
@@ -82,3 +85,10 @@ const keyCodeToPositionChange = (keyCode) => {
     }
     return position;
 }
+
+export const doesPlayerHaveMostCoins = (playerCoins, mostCoins) => {
+  if (playerCoins > mostCoins) {
+    return true;
+  }
+  return false;
+};

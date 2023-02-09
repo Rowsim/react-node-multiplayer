@@ -172,6 +172,12 @@ button:active {
   white-space: nowrap;
 }
 
+.Character_name {
+  &--mostCoins {
+    color: gold;
+  }
+}
+
 .Character_coins {
   margin-left: 2px;
   color: gold;
