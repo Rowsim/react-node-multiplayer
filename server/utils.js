@@ -16,7 +16,6 @@ export const MAP_DATA = {
     blockedSpaces: {
         "7x4": true,
         "1x11": true,
-        "12x10": true,
         "4x7": true,
         "5x7": true,
         "6x7": true,
