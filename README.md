@@ -1,5 +1,5 @@
 # react-node-multiplayer
-A simple multiplayer demo using:
+A simple multiplayer client and server using:
 
 ### Client:
 ReactJS  
@@ -10,4 +10,4 @@ nodejs
 http   
 socket.io  
 
-Client uses assets from, and takes inspiration from [this youtube tutorial](https://www.youtube.com/watch?v=xhURh2RDzzg)
+Client uses assets from, and takes inspiration from [this youtube tutorial](https://www.youtube.com/watch?v=xhURh2RDzzg) by Drew Conley
