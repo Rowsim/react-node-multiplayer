@@ -2,12 +2,12 @@
 A simple multiplayer demo using:
 
 ### Client:
-ReactJS
-socket.io-client
+ReactJS  
+socket.io-client  
 
 ### Server:
-nodejs
-http
-socket.io
+nodejs  
+http   
+socket.io  
 
 Client uses assets from, and takes inspiration from [this youtube tutorial](https://www.youtube.com/watch?v=xhURh2RDzzg)
